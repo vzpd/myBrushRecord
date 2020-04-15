@@ -1,0 +1,71 @@
+# 给定一个二叉树，返回其节点值的锯齿形层次遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+#
+# 例如：
+# 给定二叉树 [3,9,20,null,null,15,7],
+#
+#     3
+#    / \
+#   9  20
+#     /  \
+#    15   7
+# 返回锯齿形层次遍历如下：
+#
+# [
+#   [3],
+#   [20,9],
+#   [15,7]
+# ]
+
+
+# Definition for a binary tree node.
+from typing import List
+
+
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+
+def getTree(l: List):
+    dp = [None if x is None else TreeNode(x) for x in l]
+    dp.insert(0, None)
+    for i in range(len(dp)):
+        if dp[i] is not None:
+            if 2 * i < len((dp)):
+                dp[i].left = dp[2 * i]
+            if 2 * i + 1 < len(dp):
+                dp[i].right = dp[2 * i + 1]
+    return dp[1:]
+
+
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        def resorce(root, level):
+            if root:
+                if len(dp) <= level:
+                    dp.append([])
+                if level % 2 == 0:
+                    dp[level].append(root.val)
+                else:
+                    dp[level].insert(0, root.val)
+                resorce(root.left, level + 1)
+                resorce(root.right, level + 1)
+
+        dp = []
+        resorce(root, 0)
+        return dp
+
+
+s = Solution()
+root = getTree([3, 9, 20, None, None, 15, 7])[0]
+assert s.zigzagLevelOrder(root) == [[3], [20, 9], [15, 7]]
+
+root = getTree([3, 9, 20])[0]
+assert s.zigzagLevelOrder(root) == [[3], [20, 9]]
+
+root = getTree([3, None, 20])[0]
+assert s.zigzagLevelOrder(root) == [[3], [20]]
+
+assert s.zigzagLevelOrder(None) == []
