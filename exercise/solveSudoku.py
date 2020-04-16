@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import List
 
 from exercise.myUtils import count_time
@@ -7,14 +8,15 @@ class Solution:
     @count_time
     def solveSudoku(self, board: List[List[str]]) -> bool:
 
+        @lru_cache()
         def getRelateIndex(i, j):
             partH = [(i, k) for k in range(9)]
             partV = [(k, j) for k in range(9)]
             indexH, indexV = i % 3, j % 3
-            partNear = [(m, n) for m, n in zip(
-                sorted([k for k in range(i - indexH, i - indexH + 3)] * 3),
-                [k for k in range(j - indexV, j - indexV + 3)] * 3
-            )]
+            indexNearHs = sorted([k for k in range(i - indexH, i - indexH + 3)] * 3)
+            indexNearVs = [k for k in range(j - indexV, j - indexV + 3)] * 3
+            partN = zip(indexNearHs, indexNearVs)
+            partNear = [(m, n) for m, n in partN]
             return set(partH + partV + partNear)
 
         def reduceLeftDict(dict, i, j, sefValFlag: bool):
@@ -67,13 +69,10 @@ class Solution:
         for i in range(len(board)):
             for j in range(len(board[i])):
                 if board[i][j] == '.':
-                    if i == 7 and j == 7:
-                        a = 1
+
                     rIndex = getRelateIndex(i, j)
-                    rVals = [board[x][y] for x, y in rIndex]
-                    left = [z for z in all if
-                            z not in rVals]
-                    leftDict[(i, j)] = left
+                    leftDict[(i, j)] = [z for z in all if z not in [board[x][y] for x, y in rIndex]]
+
                     if len(leftDict[i, j]) == 1:
                         board[i][j] = leftDict[i, j][0]
                         reduceLeftDict(leftDict, i, j, True)
@@ -97,7 +96,7 @@ def printBoard(board):
 
 
 @count_time
-def testSolution():
+def countSolution():
     s = Solution()
     board = [['5', '3', '.', '.', '7', '.', '.', '.', '.'],
              ['6', '.', '.', '1', '9', '5', '.', '.', '.'],
@@ -148,15 +147,6 @@ def testSolution():
     s.solveSudoku(board)
     # printBoard(board)
 
+
 print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
+countSolution()
