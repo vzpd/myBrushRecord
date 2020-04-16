@@ -47,13 +47,13 @@ class Solution:
                     if 1 < len(gussDict.get(key)) < 3:
                         for val in gussDict.get(key):
                             tempDict[key] = [val]
-                            # print('    ' * count, 'try set ', key, '->', val)
+                            print('    ' * count, 'try set ', key, '->', val)
                             reduceLeftDict(tempDict, key[0], key[1], False)
                             if gussIndex(tempDict, count + 1):
-                                # print('    ' * count, 'try set ', key, '->', val, ' success')
+                                print('    ' * count, 'try set ', key, '->', val, ' success')
                                 return True
                             else:
-                                # print('    ' * count, 'try set ', key, '->', val, ' fail')
+                                print('    ' * count, 'try set ', key, '->', val, ' fail')
                                 tempDict = copyDict(gussDict)
                         return False
             else:
@@ -78,6 +78,9 @@ class Solution:
                         board[i][j] = leftDict[i, j][0]
                         reduceLeftDict(leftDict, i, j, True)
 
+        print(board)
+        print(leftDict)
+
         gussDict = copyDict(leftDict)
 
         gussIndex(gussDict, 0)
@@ -97,7 +100,7 @@ def printBoard(board):
 
 
 @count_time
-def testSolution():
+def countSolution():
     s = Solution()
     board = [['5', '3', '.', '.', '7', '.', '.', '.', '.'],
              ['6', '.', '.', '1', '9', '5', '.', '.', '.'],
@@ -148,15 +151,5 @@ def testSolution():
     s.solveSudoku(board)
     # printBoard(board)
 
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
-print('///////////////////////////////////////////////////////////////////')
-testSolution()
+
+countSolution()
