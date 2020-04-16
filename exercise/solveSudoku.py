@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import List
 
 from exercise.myUtils import count_time
@@ -7,14 +8,15 @@ class Solution:
     @count_time
     def solveSudoku(self, board: List[List[str]]) -> bool:
 
+        @lru_cache()
         def getRelateIndex(i, j):
             partH = [(i, k) for k in range(9)]
             partV = [(k, j) for k in range(9)]
             indexH, indexV = i % 3, j % 3
-            partNear = [(m, n) for m, n in zip(
-                sorted([k for k in range(i - indexH, i - indexH + 3)] * 3),
-                [k for k in range(j - indexV, j - indexV + 3)] * 3
-            )]
+            indexNearHs = sorted([k for k in range(i - indexH, i - indexH + 3)] * 3)
+            indexNearVs = [k for k in range(j - indexV, j - indexV + 3)] * 3
+            partN = zip(indexNearHs, indexNearVs)
+            partNear = [(m, n) for m, n in partN]
             return set(partH + partV + partNear)
 
         def reduceLeftDict(dict, i, j, sefValFlag: bool):
@@ -47,13 +49,13 @@ class Solution:
                     if 1 < len(gussDict.get(key)) < 3:
                         for val in gussDict.get(key):
                             tempDict[key] = [val]
-                            print('    ' * count, 'try set ', key, '->', val)
+                            # print('    ' * count, 'try set ', key, '->', val)
                             reduceLeftDict(tempDict, key[0], key[1], False)
                             if gussIndex(tempDict, count + 1):
-                                print('    ' * count, 'try set ', key, '->', val, ' success')
+                                # print('    ' * count, 'try set ', key, '->', val, ' success')
                                 return True
                             else:
-                                print('    ' * count, 'try set ', key, '->', val, ' fail')
+                                # print('    ' * count, 'try set ', key, '->', val, ' fail')
                                 tempDict = copyDict(gussDict)
                         return False
             else:
@@ -67,19 +69,13 @@ class Solution:
         for i in range(len(board)):
             for j in range(len(board[i])):
                 if board[i][j] == '.':
-                    if i == 7 and j == 7:
-                        a = 1
+
                     rIndex = getRelateIndex(i, j)
-                    rVals = [board[x][y] for x, y in rIndex]
-                    left = [z for z in all if
-                            z not in rVals]
-                    leftDict[(i, j)] = left
+                    leftDict[(i, j)] = [z for z in all if z not in [board[x][y] for x, y in rIndex]]
+
                     if len(leftDict[i, j]) == 1:
                         board[i][j] = leftDict[i, j][0]
                         reduceLeftDict(leftDict, i, j, True)
-
-        print(board)
-        print(leftDict)
 
         gussDict = copyDict(leftDict)
 
@@ -152,4 +148,5 @@ def countSolution():
     # printBoard(board)
 
 
+print('///////////////////////////////////////////////////////////////////')
 countSolution()
