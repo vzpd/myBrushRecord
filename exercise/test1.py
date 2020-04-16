@@ -1,5 +1,5 @@
 # Bit Manipulation,DFS,python solution
-from myDjangoTest.bd_test.myUtils import count_time
+from exercise.myUtils import count_time
 
 
 class Solution(object):
@@ -68,7 +68,7 @@ class Solution(object):
 
 
 @count_time
-def testSolution():
+def countSolution():
     s = Solution()
     board = [['5', '3', '.', '.', '7', '.', '.', '.', '.'],
              ['6', '.', '.', '1', '9', '5', '.', '.', '.'],
@@ -120,4 +120,4 @@ def testSolution():
     # printBoard(board)
 
 
-testSolution()
+countSolution()
