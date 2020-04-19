@@ -29,22 +29,34 @@ class Solution:
         # return max(dp)
 
         # 动态规划+二分查找
-        if not nums:
-            return 0
-        dp = [nums[0]]
-        for i in range(1, len(nums)):
-            maxval = 0
-            # 天色已晚，并未改成二分法，待修改
+        # if not nums:
+        #     return 0
+        # dp = [nums[0]]
+        # for i in range(1, len(nums)):
+        #     maxval = 0
+        #     # 天色已晚，并未改成二分法，待修改
+        #     for j in range(len(dp)):
+        #         if nums[i] > dp[j]:
+        #             maxval += 1
+        #     if maxval == len(dp):
+        #         dp.append(nums[i])
+        #     else:
+        #         dp[maxval] = dp[maxval] if dp[maxval] < nums[i] else nums[i]
+        # return len(dp)
+        dp = []
+        for i in range(len(nums)):
+            # 此处可以修改为二分法以提升执行效率
             for j in range(len(dp)):
-                if nums[i] > dp[j]:
-                    maxval += 1
-            if maxval == len(dp):
-                dp.append(nums[i])
+                if nums[i] <= dp[j]:
+                    dp[j] = nums[i]
+                    break
             else:
-                dp[maxval] = dp[maxval] if dp[maxval] < nums[i] else nums[i]
+                dp.append(nums[i])
+        print(dp)
         return len(dp)
 
 
 s = Solution()
 assert s.lengthOfLIS([10, 9, 2, 4, 5, 3, 7, 101, 18]) == 5
 assert s.lengthOfLIS([10, 9, 2, 3]) == 2
+assert s.lengthOfLIS([2, 1]) == 1
