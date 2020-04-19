@@ -67,9 +67,17 @@ class Solution:
         if length < 2 or 0 not in nums:
             return True
         else:
+            # for i in range(length - 2, -1, -1):
+            #     if nums[i] == 0:
+            #         for j in range(i):
+            #             if j + nums[j] > i:
+            #                 break
+            #         else:
+            #             return False
+            i = length - 2
             for i in range(length - 2, -1, -1):
                 if nums[i] == 0:
-                    for j in range(i):
+                    for j in range(i-1,-1,-1):
                         if j + nums[j] > i:
                             break
                     else:
@@ -78,8 +86,14 @@ class Solution:
             return True
 
 
+# 注意！！！
+# 此题中0是特殊数字
+# 如果数组中没有0存在，则一定可以到达最后一个位置
+# 如果存在0，则只需判断能否到达所有0所在的位置
+
 s = Solution()
 assert s.canJump([2]) == True
+assert s.canJump([0, 2]) == False
 assert s.canJump([1, 1, 0, 1]) == False
 assert s.canJump([2, 0]) == True
 assert s.canJump([3, 0, 8, 2, 0, 0, 1]) == True
