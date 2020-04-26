@@ -1,4 +1,5 @@
 import time
+from typing import List
 
 
 def count_time(func):
@@ -14,3 +15,24 @@ def count_time(func):
         return res
 
     return int_time
+
+
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+
+def list2ListNode(nums: List) -> ListNode:
+    if nums:
+        currNode = ListNode(nums[0])
+        currNode.next = list2ListNode(nums[1:])
+        return currNode
+
+
+def listNode2List(root: ListNode) -> List:
+    res = []
+    while root:
+        res.append(root.val)
+        root = root.next
+    return res
