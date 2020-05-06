@@ -36,3 +36,19 @@ def listNode2List(root: ListNode) -> List:
         res.append(root.val)
         root = root.next
     return res
+
+
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+
+def list2TreeNode(list: List, n: int = 0) -> TreeNode:
+    if n >= len(list) or (list[n] is None and n * 2 + 1 >= len(list)):
+        return
+    root = TreeNode(list[n])
+    root.left = list2TreeNode(list, 2 * n + 1)
+    root.right = list2TreeNode(list, 2 * n + 2)
+    return root
