@@ -1,8 +1,10 @@
 import time
+from functools import wraps
 from typing import List
 
 
 def count_time(func):
+    @wraps(func)
     def int_time(*args, **kwargs):
         start_time = time.time()  # 程序开始时间
         res = func(*args, **kwargs)
