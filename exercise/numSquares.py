@@ -10,7 +10,7 @@
 # 输入: n = 13
 # 输出: 2
 # 解释: 13 = 4 + 9.
-import math
+from functools import lru_cache
 
 from exercise.myUtils import count_time
 
@@ -49,66 +49,71 @@ class Solution:
 
         # 贪心枚举
         # @lru_cache(10000)
-        # def isDividedBy(k, count) -> bool:
-        #     if count == 1:
-        #         return k in numSquares
-        #     else:
-        #         for num in numSquares:
-        #             if isDividedBy(k - num, count - 1):
-        #                 return True
-        #         else:
-        #             return False
-        #
-        # sqr = n ** 0.5
-        # sqrInt = int(sqr)
-        # if sqr == sqrInt:
+        def isDividedBy(k, count) -> bool:
+            if count == 1:
+                return k in numSquares
+            else:
+                for num in numSquares:
+                    if isDividedBy(k - num, count - 1):
+                        return True
+                else:
+                    return False
+
+        sqr = n ** 0.5
+        sqrInt = int(sqr)
+        if sqr == sqrInt:
+            return 1
+        numSquares = [x ** 2 for x in range(1, sqrInt + 1)]
+
+        for count in range(1, n + 1):
+            if isDividedBy(n, count):
+                return count
+        # sqr = int(n ** 0.5)
+        # if sqr ** 2 == n:
         #     return 1
-        # numSquares = [x ** 2 for x in range(1, sqrInt + 1)]
-        #
-        # for count in range(1, n + 1):
-        #     if isDividedBy(n, count):
-        #         return count
+        # squareNums = [x * x for x in range(1, sqr + 1)]
+        # dp = [0, 1]
+        # for i in range(2, n + 1):
+        #     count = float('inf')
+        #     for j in [x for x in squareNums if x <= i]:
+        #         count = min(count, dp[i - j] + 1)
+        #     dp.append(count)
+        # return count
 
         # 贪心 + BFS
-        # sqr = n ** 0.5
-        # sqrInt = int(sqr)
-        # if sqr == sqrInt:
-        #     return 1
-        #
-        # numSquares = [x * x for x in range(1, sqrInt + 1)]
-        #
+        # sqr = int(n ** 0.5)
+        # squareNums = [x * x for x in range(1, sqr + 1)]
+        # curr = [n]
         # count = 0
-        # currDp = {n}
         # while 1:
+        #     temp = set()
         #     count += 1
-        #     nextDp = set()
-        #     for x in currDp:
-        #         sqr = x ** 0.5
-        #         if sqr == int(sqr):
-        #             return count
-        #         else:
-        #             for y in [y for y in numSquares if y < x]:
-        #                 nextDp.add(x - y)
-        #     currDp = nextDp
-
+        #     for x in curr:
+        #         for y in [i for i in squareNums if i <= x]:
+        #             if x == y:
+        #                 return count
+        #             else:
+        #                 temp.add(x - y)
+        #     curr = temp
+        # return count
         # 数学运算
-        def isSquare(n: int) -> bool:
-            sq = int(math.sqrt(n))
-            return sq * sq == n
-
-        # four-square and three-square theorems
-        while (n & 3) == 0:
-            n >>= 2  # reducing the 4^k factor from number
-        if (n & 7) == 7:  # mod 8
-            return 4
-        if isSquare(n):
-            return 1
-        # check if the number can be decomposed into sum of two squares
-        for i in range(1, int(n ** (0.5)) + 1):
-            if isSquare(n - i * i):
-                return 2
-        # bottom case from the three-square theorem
-        return 3
+        # def isSquare(n: int) -> bool:
+        #     sq = int(math.sqrt(n))
+        #     return sq * sq == n
+        #
+        # # four-square and three-square theorems
+        # while (n & 3) == 0:
+        #     n >>= 2  # reducing the 4^k factor from number
+        # if (n & 7) == 7:  # mod 8
+        #     return 4
+        # if isSquare(n):
+        #     return 1
+        # # check if the number can be decomposed into sum of two squares
+        # for i in range(1, int(n ** (0.5)) + 1):
+        #     if isSquare(n - i * i):
+        #         return 2
+        # # bottom case from the three-square theorem
+        # return 3
 
 
 s = Solution()
