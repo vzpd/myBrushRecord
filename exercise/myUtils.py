@@ -8,9 +8,9 @@ def timer(func):
     def int_time(*args, **kwargs):
         param = ''
         if len(args):
-            if hasattr(args[0], func.__name__):
-                argsstr = [str(x) for x in args[1:]]
-                param += ', '.join(argsstr)
+            # 判断第一个参数是不是func所属的类
+            argsstr = [str(x) for x in args[1:]] if hasattr(args[0], func.__name__) else [str(x) for x in args]
+            param += ', '.join(argsstr)
         for key in kwargs.keys():
             if param:
                 param += ', ' + str(key) + '=' + str(kwargs[key])
