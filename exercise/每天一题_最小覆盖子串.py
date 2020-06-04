@@ -2,7 +2,7 @@ import collections
 
 
 class Solution:
-    # @count_time
+    # @timer
     # def minWindow(self, s: str, t: str) -> str:
     #     minChars = s
     #     minLength = float('inf')
@@ -31,7 +31,7 @@ class Solution:
     #     if minLength == float('inf'):
     #         return ''
     #     return minChars
-    # @count_time
+    # @timer
     # def minWindow(self, s: str, t: str) -> str:
     #
     #     dict = collections.defaultdict(int)
@@ -87,7 +87,7 @@ class Solution:
     #                 minChars = s[l:i + 1]
     #     print(minChars)
     #     return minChars
-    # @count_time
+    # @timer
     # def minWindow(self, s: str, t: str) -> str:
     #     tdict = collections.Counter(t)
     #     minLength = float('inf')

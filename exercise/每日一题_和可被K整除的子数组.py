@@ -1,11 +1,11 @@
 import collections
 from typing import List
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def subarraysDivByK(self, A: List[int], K: int) -> int:
         # count = 0
         # for i in range(len(A)):

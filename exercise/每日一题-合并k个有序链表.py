@@ -14,7 +14,7 @@
 # Definition for singly-linked list.
 from typing import List
 
-from exercise.myUtils import list2ListNode, listNode2List, count_time
+from exercise.myUtils import list2ListNode, listNode2List, timer
 
 
 class ListNode:
@@ -24,7 +24,7 @@ class ListNode:
 
 
 class Solution:
-    @count_time
+    @timer
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:
         # 顺序合并
         # if not lists:

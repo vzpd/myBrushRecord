@@ -21,11 +21,11 @@
 # 0 < grid[0].length <= 200
 from typing import List
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def maxValue(self, grid: List[List[int]]) -> int:
         dp = []
         for i in range(len(grid)):

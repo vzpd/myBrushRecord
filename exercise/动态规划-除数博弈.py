@@ -25,11 +25,11 @@
 # 提示：
 #
 # 1 <= N <= 1000
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def divisorGame(self, N: int) -> bool:
         # 动态规划
         # N为1时，轮到时，谁输，dp[1]=True

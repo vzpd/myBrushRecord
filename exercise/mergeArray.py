@@ -13,11 +13,11 @@
 
 from typing import List
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         if len(intervals) < 2:
             return intervals

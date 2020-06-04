@@ -32,7 +32,7 @@ from typing import List
 
 class Solution:
     # 滑动窗口
-    # @count_time
+    # @timer
     # def numberOfSubarrays(self, nums: List[int], k: int) -> int:
     #     temp = [x % 2 for x in nums]
     #

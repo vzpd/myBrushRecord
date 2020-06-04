@@ -1,11 +1,11 @@
 from typing import List
 
 from exercise.getMaxProfitFee import getMaxProfitFee
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def maxProfit(self, prices: List[int], fee: int) -> int:
         # 3
         # def next(i, j):

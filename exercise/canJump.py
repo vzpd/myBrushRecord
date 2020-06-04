@@ -16,11 +16,11 @@
 # 解释: 无论怎样，你总会到达索引为 3 的位置。但该位置的最大跳跃长度是 0 ， 所以你永远不可能到达最后一个位置。
 from typing import List
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def canJump(self, nums: List[int]) -> bool:
         # length = len(nums)
         # currIndex = length - 1

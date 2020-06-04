@@ -23,11 +23,11 @@
 # 解释: 每座岛屿只能由水平和/或竖直方向上相邻的陆地连接而成。
 from typing import List
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def numIslands(self, grid: List[List[str]]) -> int:
         def findIsland(i, j):
             if -1 < i < len(grid) and -1 < j < len(grid[i]):

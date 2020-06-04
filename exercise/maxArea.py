@@ -14,11 +14,11 @@
 # 输出：49
 from typing import List
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def maxArea(self, height: List[int]) -> int:
         # length = len(height)
         # if length < 2:

@@ -14,11 +14,11 @@
 # ]
 from typing import List
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     # def permute(self, nums: List[int]) -> List[List[int]]:
     #     def combo(pre: List, numsLeft: List):
     #         length = len(numsLeft)
