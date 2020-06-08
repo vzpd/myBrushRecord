@@ -1,3 +1,4 @@
+import collections
 from typing import List
 
 from exercise.myUtils import timer
@@ -8,7 +9,6 @@ class Solution:
     def equationsPossible(self, equations: List[str]) -> bool:
         class cobj(object):
             def __init__(self, chr):
-                self.chr = chr
                 self.objection = set()
                 self.count = 1
 
@@ -18,7 +18,6 @@ class Solution:
             c0 = equations[i][0]
             c3 = equations[i][3]
             op = equations[i][1]
-            i0, i3 = None, None
             if c0 in dict:
                 i0 = dict[c0]
             else:
