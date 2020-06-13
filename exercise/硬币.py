@@ -24,11 +24,11 @@
 #
 # 0 <= n (总金额) <= 1000000
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def waysToChange(self, n: int) -> int:
         coins = [1, 5, 10, 25]
         res = 0

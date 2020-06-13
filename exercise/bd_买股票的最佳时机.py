@@ -26,7 +26,6 @@ class Solution:
         for i in range(len(prices)):
             if prices[i] < minPrice:
                 minPrice = prices[i]
-                maxPrice = minPrice
             profit = max(profit, prices[i] - minPrice)
 
         return profit

@@ -12,11 +12,11 @@
 # 进阶: 你能将算法的时间复杂度降低到 O(n log n) 吗?
 from typing import List
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def lengthOfLIS(self, nums: List[int]) -> int:
         dp = [[0,0]]
         for i in range(len(nums)):

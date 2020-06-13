@@ -1,8 +1,8 @@
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def myPow(self, x: float, n: int) -> float:
         if n < 0:
             x = 1 / x

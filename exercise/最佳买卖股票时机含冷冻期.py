@@ -15,40 +15,22 @@ from typing import List
 
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        dp = [0]
-        inIndex = [0]
-        for i in range(1, len(prices)):
-            res = prices[i] - prices[i - 1]
-            if res > 0:
-                if inIndex[-1] > 1:
-                    in1 = dp[inIndex[-1] - 1] + prices[i] - prices[inIndex[-1] + 1]
-                    in2 = dp[inIndex[-1] - 2] + prices[i] - prices[inIndex[-1]]
-                    in3 = prices[i] - prices[inIndex[-2]] + dp[inIndex[-2]]
-                    if in3 > in2 and in3 > in1:
-                        dp.append(in3)
-                        inIndex = inIndex[:-1]
-                    elif in1 > in2:
-                        dp.append(in1)
-                        inIndex.append(inIndex[-1] + 1)
-                    else:
-                        dp.append(in2)
+        if len(prices) < 2:
+            return 0
+        a, b = [0, -prices[0]], [max(prices[1] - prices[0], 0), max(-prices[0], -prices[1])]
+        for i in range(2, len(prices)):
+            b, a = [max(b[0], b[1] + prices[i]), max(b[1], a[0] - prices[i])], b
 
-                else:
-                    dp.append(prices[i] - prices[inIndex[-1]])
-            else:
-                dp.append(dp[-1])
-                inIndex.append(i)
-
-        return dp[-1]
+        return b[0]
 
 
 s = Solution()
+assert s.maxProfit([1, 2, 3, 0, 2]) == 3
+assert s.maxProfit([3, 3, 5, 0, 0, 3, 1, 4]) == 6
 assert s.maxProfit(
     [70, 4, 83, 56, 94, 72, 78, 43, 2, 86, 65, 100, 94, 56, 41, 66, 3, 33, 10, 3, 45, 94, 15, 12, 78, 60, 58, 0, 58,
      15]) == 433
-assert s.maxProfit([3, 3, 5, 0, 0, 3, 1, 4]) == 6
 assert s.maxProfit([1]) == 0
-assert s.maxProfit([1, 2, 3, 0, 2]) == 3
 assert s.maxProfit([1, 1, 1, 0, 1, 1]) == 1
 assert s.maxProfit([1, 2, 3, 2, 1, 2, 3]) == 4
 assert s.maxProfit([3, 2, 3, 2]) == 1

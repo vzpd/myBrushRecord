@@ -12,11 +12,11 @@
 # 解释: 13 = 4 + 9.
 from functools import lru_cache
 
-from exercise.myUtils import count_time
+from exercise.myUtils import timer
 
 
 class Solution:
-    @count_time
+    @timer
     def numSquares(self, n: int) -> int:
         # 暴力枚举
         # @lru_cache(10000)

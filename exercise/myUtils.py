@@ -3,17 +3,26 @@ from functools import wraps
 from typing import List
 
 
-def count_time(func):
+def timer(func):
     @wraps(func)
     def int_time(*args, **kwargs):
+        param = ''
+        if len(args):
+            # 判断第一个参数是不是func所属的类
+            argsstr = [str(x) for x in args[1:]] if hasattr(args[0], func.__name__) else [str(x) for x in args]
+            param += ', '.join(argsstr)
+        for key in kwargs.keys():
+            if param:
+                param += ', ' + str(key) + '=' + str(kwargs[key])
+            else:
+                param += str(key) + '=' + str(kwargs[key])
+        param = '(' + param + ')'
         start_time = time.time()  # 程序开始时间
         res = func(*args, **kwargs)
         over_time = time.time()  # 程序结束时间
         total_time = (over_time - start_time) * 1000
-        if total_time > 0.1:
-            print('程序%s运行用时%s毫秒' % (func.__name__, round(total_time, 3)))
-        else:
-            print('程序%s运行用时%s微秒' % (func.__name__, round(total_time * 1000, 3)))
+
+        print('{:^10.5f}毫秒,\t{}{:<30} \t=> {}'.format(round(total_time, 3), func.__name__, param, res, chr(12288)))
         return res
 
     return int_time
