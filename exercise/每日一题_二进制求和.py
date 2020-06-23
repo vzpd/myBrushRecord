@@ -48,6 +48,7 @@ class Solution:
             # carry保留x于y相加之后每一位上的进位，将所有的进位左移一位，是为了把所有进位加到answer上
             carry = (x & y) << 1
             x, y = answer, carry
+        # 最后截取字符串是因为二进制是以0b开头的,需要去除这2个字符
         return bin(x)[2:]
 
 
