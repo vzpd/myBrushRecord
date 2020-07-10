@@ -63,3 +63,15 @@ def list2TreeNode(list: List, n: int = 0) -> TreeNode:
     root.left = list2TreeNode(list, 2 * n + 1)
     root.right = list2TreeNode(list, 2 * n + 2)
     return root
+
+
+def comparelist(a, b):
+    if len(a) != len(b):
+        return False
+
+    s = set(map(tuple, a))
+    for i in range(len(b)):
+        if tuple(b[i]) not in s:
+            return False
+
+    return True
