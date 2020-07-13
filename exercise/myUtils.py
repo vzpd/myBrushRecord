@@ -1,3 +1,4 @@
+import inspect
 import time
 from functools import wraps
 from typing import List
@@ -6,23 +7,20 @@ from typing import List
 def timer(func):
     @wraps(func)
     def int_time(*args, **kwargs):
-        param = ''
-        if len(args):
-            # 判断第一个参数是不是func所属的类
-            argsstr = [str(x) for x in args[1:]] if hasattr(args[0], func.__name__) else [str(x) for x in args]
-            param += ', '.join(argsstr)
-        for key in kwargs.keys():
-            if param:
-                param += ', ' + str(key) + '=' + str(kwargs[key])
-            else:
-                param += str(key) + '=' + str(kwargs[key])
-        param = '(' + param + ')'
+        sig = inspect.signature(func)
+        bound_sig = sig.bind(*args, **kwargs)
+        bound_sig.arguments.pop('self')
+        argsstr = ''
+        for k, v in bound_sig.arguments.items():
+            argsstr += ',' + str(k) + '=' + str(v)
         start_time = time.time()  # 程序开始时间
         res = func(*args, **kwargs)
         over_time = time.time()  # 程序结束时间
         total_time = (over_time - start_time) * 1000
 
-        print('{:^10.5f}毫秒,\t{}{:<30} \t=> {}'.format(round(total_time, 3), func.__name__, param, res, chr(12288)))
+        print('{:^10.5f}毫秒,\t{}({:<40}) \t=> {}'.format(round(total_time, 3), func.__name__,
+                                                        argsstr[1:38] if len(argsstr) < 38 else argsstr[1:38] + '...',
+                                                        res))
         return res
 
     return int_time
