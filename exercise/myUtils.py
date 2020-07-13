@@ -19,7 +19,7 @@ def timer(func):
         total_time = (over_time - start_time) * 1000
 
         print('{:^10.5f}毫秒,\t{}({:<40}) \t=> {}'.format(round(total_time, 3), func.__name__,
-                                                        argsstr[1:38] if len(argsstr) < 38 else argsstr[1:38] + '...',
+                                                        argsstr[1:36] if len(argsstr) <= 36 else argsstr[1:36] + '...',
                                                         res))
         return res
 

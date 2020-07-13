@@ -59,6 +59,9 @@
 # assert s.kthFactor(n=4, k=4) == -1
 # assert s.kthFactor(n=1, k=1) == 1
 # assert s.kthFactor(n=1000, k=3) == 4
+import collections
+import heapq
+from math import ceil
 from typing import List
 
 from exercise.myUtils import timer
@@ -187,48 +190,68 @@ xi != yi
 class Solution:
     @timer
     def minNumberOfSemesters(self, n: int, dependencies: List[List[int]], k: int) -> int:
-        dict = {}
-        for i in range(len(dependencies)):
-            if dependencies[i][1] in dict:
-                dict[dependencies[i][1]].append(dependencies[i][0])
-            else:
-                dict[dependencies[i][1]] = [dependencies[i][0]]
-        s = [0] * (n + 1)
-        maxdeep = 0
-        for i in range(1, n + 1):
-            if i not in dict:
-                s[i] = 0
-            else:
-                temp = set(dict[i])
-                count = 0
-                while temp:
-                    count += 1
-                    curr = set()
-                    for x in temp:
-                        if x in dict:
-                            curr = curr.union(set(dict[x]))
-                    temp = curr
-                s[i] = count
-                maxdeep = max(maxdeep, count)
-        s = s[1:]
-        print(s)
-        deep = [0] * (maxdeep + 1)
-        for i in range(len(s)):
-            deep[s[i]] += 1
-        print(deep)
-        res = 0
-        for i in range(len(deep)):
-            if deep[i] % k == 0:
-                res += deep[i] // k
-            else:
-                res += deep[i] // k + 1
-        return res
+        degree = collections.defaultdict(int)
+        graphq = collections.defaultdict(list)
+        graphp = collections.defaultdict(list)
+        for p, q in dependencies:
+            degree[p] += 1
+            graphq[q].append(p)
+            graphp[p].append(q)
+
+        dictlevel = collections.defaultdict(int)
+
+        def setlevel(p, level):
+            dictlevel[p] = max(dictlevel[p], level)
+            for x in graphp[p]:
+                setlevel(x, level + 1)
+
+        for p in range(1, n + 1):
+            if not graphq[p]:
+                setlevel(p, 1)
+
+        independce = 0
+        queue = []
+        for p in range(1, n + 1):
+            if degree[p] == 0:
+                if graphq[p]:
+                    heapq.heappush(queue, (-dictlevel[p], p))
+                else:
+                    independce += 1
+
+        ans = 0
+        while queue:
+            temp = []
+            tempindepence = 0
+            for i in range(k):
+                if queue:
+                    _, q = heapq.heappop(queue)
+                    for p in graphq[q]:
+                        degree[p] -= 1
+                        if degree[p] == 0:
+                            if graphq[p]:
+                                temp.append(p)
+                            else:
+                                tempindepence += 1
+                elif independce > 0:
+                    independce -= 1
+            for x in temp:
+                heapq.heappush(queue, (-dictlevel[x], x))
+            independce += tempindepence
+            ans += 1
+
+        if independce == 0:
+            return ans
+        else:
+            return ans + ceil(independce / k)
 
 
 s = Solution()
-assert s.minNumberOfSemesters(8, [[1, 6], [2, 7], [8, 7], [2, 5], [3, 4]], 3) == 3
-assert s.minNumberOfSemesters(n=4, dependencies=[[2, 1], [3, 1], [1, 4]], k=2) == 3
 assert s.minNumberOfSemesters(n=5, dependencies=[[2, 1], [3, 1], [4, 1], [1, 5]], k=2) == 4
+assert s.minNumberOfSemesters(12,
+                              [[1, 2], [1, 3], [7, 5], [7, 6], [4, 8], [8, 9], [9, 10], [10, 11], [11, 12]],
+                              2) == 6
+assert s.minNumberOfSemesters(n=4, dependencies=[[2, 1], [2, 4]], k=2) == 2
+assert s.minNumberOfSemesters(n=4, dependencies=[[2, 1], [3, 1], [1, 4]], k=2) == 3
+assert s.minNumberOfSemesters(8, [[1, 6], [2, 7], [8, 7], [2, 5], [3, 4]], 3) == 3
 assert s.minNumberOfSemesters(n=11, dependencies=[], k=2) == 6
 assert s.minNumberOfSemesters(n=4, dependencies=[[2, 1], [4, 3]], k=2) == 2
-
