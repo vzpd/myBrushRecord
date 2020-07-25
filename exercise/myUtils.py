@@ -4,32 +4,25 @@ from functools import wraps
 from typing import List
 
 
-class timer():
-    def __init__(self, func):
-        self.func = func
+def timer(func):
+    @wraps(func)
+    def int_time(*args, **kwargs):
+        sig = inspect.signature(func)
+        bound_sig = sig.bind(*args, **kwargs)
+        if 'self' in bound_sig.arguments:
+            bound_sig.arguments.pop('self')
+        argsstr = ''
+        for k, v in bound_sig.arguments.items():
+            argsstr += ',' + str(k) + '=' + str(v)
+        start_time = time.time()  # 程序开始时间
+        res = func(*args, **kwargs)
+        over_time = time.time()  # 程序结束时间
+        total_time = (over_time - start_time) * 1000
+        args = argsstr[1:36] if len(argsstr) <= 36 else argsstr[1:36] + '...'
+        print('{:^10.5f}毫秒,\t{}({:<40}) \t=> {}'.format(round(total_time, 3), func.__name__, args, res))
+        return res
 
-    def __call__(self, *args, **kwargs):
-        func = self.func
-
-        def int_time(*args, **kwargs):
-            sig = inspect.signature(func)
-            bound_sig = sig.bind(*args, **kwargs)
-            if 'self' in bound_sig.arguments:
-                bound_sig.arguments.pop('self')
-            argsstr = ''
-            for k, v in bound_sig.arguments.items():
-                argsstr += ',' + str(k) + '=' + str(v)
-            argsstr = argsstr[1:36] if len(argsstr) <= 36 else argsstr[
-                                                               1:36] + '...'
-            start_time = time.time()  # 程序开始时间
-            res = func(*args, **kwargs)
-            over_time = time.time()  # 程序结束时间
-            total_time = (over_time - start_time) * 1000
-            name = func.__name__
-            print('{:^10.5f}ms,\t{}({:<40}) \t=> {}'.format(round(total_time, 3), name, argsstr, res))
-            return res
-
-        return int_time(*args, **kwargs)
+    return int_time
 
 
 class ListNode:
